@@ -1,7 +1,7 @@
 package com.spring.springboot.app.service;
 
-import com.spring.springboot.app.dao.UserDao;
 import com.spring.springboot.app.entity.User;
+import com.spring.springboot.app.repo.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -10,39 +10,39 @@ import java.util.List;
 @Service
 public class UserServiceImpl implements UserService {
 
-    private final UserDao userDao;
+    UserRepository userRepository;
 
-    public UserServiceImpl(UserDao userDao) {
-        this.userDao = userDao;
+    public UserServiceImpl(UserRepository userRepository) {
+        this.userRepository = userRepository;
     }
 
     @Transactional(readOnly = true)
     @Override
     public List<User> getUserList() {
-        return userDao.getUserList();
+        return userRepository.findAll();
     }
 
     @Transactional
     @Override
     public void addUser(User user) {
-        userDao.addUser(user);
+        userRepository.save(user);
     }
 
     @Transactional
     @Override
     public void deleteUser(User user) {
-        userDao.deleteUser(user);
+        userRepository.delete(user);
     }
 
     @Transactional
     @Override
     public void updateUser(User user) {
-        userDao.updateUser(user);
+        userRepository.save(user);
     }
 
     @Transactional(readOnly = true)
     @Override
     public User getUserById(long id) {
-        return userDao.getUserById(id);
+        return userRepository.findUserById(id);
     }
 }
